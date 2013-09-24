@@ -5,7 +5,6 @@
 #include "kdtree.h"
 #include "vector.h"
 #include "linkedlist.h"
-
 /* inserts a vector into the tree, and returns the new root */
 
 TREENODE *insert(TREENODE *subroot, VECTOR *vp){
@@ -71,7 +70,7 @@ void tfree(TREENODE *tp){
 
 void nnsearch(TREENODE *subroot, VECTOR *vp, int count){
 
-    PRIORITY_QUEUE *queue = queue_init(count);
+    PRIORITY_QUEUE *queue = queue_init(10);
     #ifdef DEBUG
     printf("nn tree search was called with \n");
     vecprint(vp);
@@ -79,7 +78,8 @@ void nnsearch(TREENODE *subroot, VECTOR *vp, int count){
     rnnsearch(subroot, vp, queue, count);
 
     if( queue->head->next != NULL){
-	printf("nearest neighbors: ");
+	printf("nearest neighbors: \n");
+        printf("num_node:%d, max_size:%d\n", queue->num_node, queue->max_size);
         queue_print(queue);
     }else{
 	printf("empty tree\n");
@@ -110,11 +110,14 @@ void rnnsearch(TREENODE *subroot, VECTOR *vp, PRIORITY_QUEUE *queue, int level){
     printf("rootdist %g mindist %g\n", rootdist, mindist);
     #endif
 
-    if( rootdist < mindist){
+    if( rootdist < mindist || queue->num_node < queue->max_size){
         NODE *node = node_init();
         node->pvec = subroot->pvec;
         node->dist = rootdist;
         insert_in_order(queue, node);
+        #ifdef DEBUG
+        queue_print(queue);
+        #endif
     }
 
     /* check the subtrees - start from the most promising first */

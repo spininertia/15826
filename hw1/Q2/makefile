@@ -39,7 +39,7 @@ p$(MAIN): $(MAIN).o $(OBJ)
 
 vector.o: dfn.h vector.h
 
-linkedlist.o: dfn.h linkedlist.h
+linkedlist.o: dfn.h vector.h linkedlist.h
 
 kdtree.o: dfn.h kdtree.h vector.h linkedlist.h
 
