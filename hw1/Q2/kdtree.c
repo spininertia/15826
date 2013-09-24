@@ -100,7 +100,12 @@ void rnnsearch(TREENODE *subroot, VECTOR *vp, PRIORITY_QUEUE *queue, int level){
     if( subroot == NULL){ return; } /* empty tree */
 
     rootdist = myvecdist2( vp, subroot->pvec);
-    mindist = myvecdist2( vp, queue->head->next->pvec);
+    if (queue->num_node == 0) {
+      mindist = HUGE;
+    }
+    else {
+     mindist = myvecdist2( vp, queue->head->next->pvec);
+    }
     #ifdef DEBUG
     printf("rootdist %g mindist %g\n", rootdist, mindist);
     #endif
